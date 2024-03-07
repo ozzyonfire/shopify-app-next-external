@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "795b89fc6d37f41cadd360bc5d708eb4"
+name = "app-next-external"
+application_url = "https://comparisons-shortly-louisiana-earning.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "matts-tech-test.myshopify.com"
+include_config_on_deploy = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://comparisons-shortly-louisiana-earning.trycloudflare.com/auth/callback",
+  "https://comparisons-shortly-louisiana-earning.trycloudflare.com/auth/shopify/callback",
+  "https://comparisons-shortly-louisiana-earning.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-01"
+
+[pos]
+embedded = false

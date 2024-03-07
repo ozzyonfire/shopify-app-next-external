@@ -1,10 +1,8 @@
 "use client";
 
-import { gql, useLazyQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { LegacyCard as Card, Page, Text } from "@shopify/polaris";
-import { useState } from "react";
-import { useFetcher } from "../providers/APIProvider";
-import { doServerAction } from "./actions";
+import { doServerAction, logout } from "./actions";
 
 interface Data {
   name: string;
@@ -26,106 +24,23 @@ interface ShopData {
 }
 
 export default function Home({ shop }: { shop: string }) {
-  const fetcher = useFetcher();
-  const [data, setData] = useState<Data | null>(null);
-  const [serverActionResult, setServerActionResult] = useState<{
-    status: "success" | "error";
-  }>();
-  const [graphqlData, setGraphglData] = useState<ShopData | null>(null);
-  const [getShop] = useLazyQuery<ShopData>(GET_SHOP, {
-    fetchPolicy: "network-only",
-  });
-
-  const handleGetAPIRequest = async () => {
-    try {
-      const data = await fetcher<Data>("/api/hello");
-      console.log(data);
-      setData(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
-    <Page title="Home">
-      <Card
-        sectioned
-        title="NextJs API Routes"
-        primaryFooterAction={{
-          content: "Call API",
-          onAction: handleGetAPIRequest,
-        }}
-      >
+    <Page
+      title="Home"
+      primaryAction={{
+        content: "Log out",
+        onAction: async () => {
+          await logout();
+          // refresh the window
+          window.location.reload();
+        },
+      }}
+    >
+      <Card sectioned title="You are now logged in">
         <Text as="p" variant="bodyMd">
-          Call a NextJS api route from within your app. The request is verified
-          using session tokens.
+          You can use the session id that is stored in your cookie to retrieve
+          an offline token.
         </Text>
-        {data && (
-          <Text as="h1" variant="headingSm">
-            {data.name} is {data.height} tall.
-          </Text>
-        )}
-      </Card>
-
-      <Card
-        sectioned
-        title="React server actions"
-        primaryFooterAction={{
-          content: "Server action",
-          onAction: async () => {
-            const response = await doServerAction(shop);
-            setServerActionResult(response);
-          },
-        }}
-      >
-        <Text as="p" variant="bodyMd">
-          Call a server action from within your app. The request is verified
-          using session tokens.
-        </Text>
-        {serverActionResult && serverActionResult.status === "success" && (
-          <Text as="h1" variant="headingSm">
-            Server action was successful.
-          </Text>
-        )}
-        {serverActionResult && serverActionResult.status === "error" && (
-          <Text as="h1" variant="headingSm">
-            Server action failed.
-          </Text>
-        )}
-      </Card>
-
-      <Card
-        sectioned
-        title="Use Apollo Client to query Shopify GraphQL"
-        primaryFooterAction={{
-          content: "GraphQL Query",
-          onAction: async () => {
-            try {
-              const { data, error } = await getShop();
-              if (data) {
-                setGraphglData(data);
-              }
-              if (error) {
-                console.error(error);
-              }
-            } catch (err) {
-              console.error(err);
-            }
-          },
-        }}
-      >
-        <Text as="p" variant="bodyMd">
-          Use Apollo Client to query Shopify&apos;s GraphQL API. The request
-          uses online session tokens.
-        </Text>
-        <Text as="p" variant="bodyMd">
-          Response:
-        </Text>
-        {graphqlData && (
-          <Text as="h1" variant="headingSm">
-            {graphqlData.shop.name}
-          </Text>
-        )}
       </Card>
     </Page>
   );

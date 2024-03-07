@@ -8,15 +8,7 @@ import ApolloProvider from "./ApolloProvider";
 import SessionProvider from "./SessionProvider";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  return (
-    <AppProvider i18n={translations}>
-      <APIProvider>
-        <ApolloProvider>
-          <SessionProvider>{children}</SessionProvider>
-        </ApolloProvider>
-      </APIProvider>
-    </AppProvider>
-  );
+  return <AppProvider i18n={translations}>{children}</AppProvider>;
 }
 
 export function ExitProvider({ children }: { children: React.ReactNode }) {

@@ -6,10 +6,10 @@ import {
   InvalidSession,
   Session,
 } from "@shopify/shopify-api";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { beginAuth } from "../auth";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const shop = url.searchParams.get("shop");
   const host = url.searchParams.get("host");
@@ -38,7 +38,7 @@ export async function GET(req: Request) {
       return new NextResponse("Missing host parameter", { status: 400 });
     }
 
-    let redirectUrl = `/?shop=${session.shop}&host=${encodeURIComponent(sanitizedHost!)}`;
+    let redirectUrl = `${process.env.HOST}/?shop=${session.shop}&host=${encodeURIComponent(sanitizedHost!)}`;
     if (shopify.config.isEmbeddedApp) {
       redirectUrl = await shopify.auth.getEmbeddedAppUrl({
         rawRequest: req,
@@ -46,7 +46,16 @@ export async function GET(req: Request) {
       });
     }
 
-    return NextResponse.redirect(redirectUrl);
+    const response = NextResponse.redirect(new URL(redirectUrl));
+    // we could store the session in a cookie here or something
+    // delete this when you want the customer to logout
+    response.cookies.set("shopifySession", session.id, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // in 1 week
+    });
+    return response;
   } catch (e: any) {
     console.warn(e);
     switch (true) {

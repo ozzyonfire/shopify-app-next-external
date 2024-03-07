@@ -1,26 +1,26 @@
-import Providers from "@/providers/providers";
-import { registerWebhooks } from "@/lib/shopify/register-webhooks";
 import { performChecks } from "@/lib/shopify/shopify-oauth";
 import Home from "./main-page";
+import { Button, Card, Text, TextField } from "@shopify/polaris";
+import shopify from "@/lib/shopify/initialize-context";
+import { cookies } from "next/headers";
+import InstallPage from "./install-page";
 
-export default async function Page({
+export default function Page({
   params,
   searchParams,
 }: {
   params: any;
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  // we can perform some checks to see if the app has been installed and that it is still valid
-  const { shop, host, embedded } = searchParams;
-  if (!shop || !host) {
-    return <h1>Missing Shop and Host Parameters</h1>;
+  const { shop } = searchParams;
+  // get session cookie?
+  const sessionCookie = cookies().get("shopifySession");
+  console.log(sessionCookie);
+
+  if (!sessionCookie) {
+    // show install page
+    return <InstallPage />;
   }
 
-  await performChecks(shop as string, host as string, embedded as string);
-
-  return (
-    <Providers>
-      <Home shop={shop as string} />
-    </Providers>
-  );
+  return <Home shop={shop as string} />;
 }

@@ -11,37 +11,31 @@ This template can be installed using your preferred package manager:
 Using pnpm (recommended):
 
 ```shell
-pnpx @shopify/create-app@latest --template https://github.com/ozzyonfire/shopify-next-app.git
+pnpx @shopify/create-app@latest --template https://github.com/ozzyonfire/shopify-next-app-external.git
 ```
 
 Using yarn:
 
 ```shell
-yarn create @shopify/app --template https://github.com/ozzyonfire/shopify-next-app.git
+yarn create @shopify/app --template https://github.com/ozzyonfire/shopify-next-app-external.git
 ```
 
 Using npx:
 
 ```shell
-npx @shopify/create-app@latest --template https://github.com/ozzyonfire/shopify-next-app.git
+npx @shopify/create-app@latest --template https://github.com/ozzyonfire/shopify-next-app-external.git
 ```
 
 This will clone the template and install the required dependencies.
 
-## Next.js and Shopify Embedded Apps
+## Shopify External Apps - Helpful links
 
-The goal of this template is to provide a quick and easy way to spin up a Shopify Embedded App that uses the Next.js app router platform. Some of the following information was previusly necessary for the `pages` router, so I am working on migrating some of the legacy code.
+- [Authorization Code Grant (OAuth)]https://shopify.dev/docs/apps/auth/get-access-tokens/authorization-code-grant
 
 ### Providers
 
 - in \_app.tsx there are a number of Providers which are needed to get everything established for an Embedded App
-  - **AppBridgeProvider**: This sets up AppBridge and resolves the host (from next/router) and API Key (from environment variables).
-  - **APIProvider**: This is just an optional helper for accessing the API routes with session tokens from Shopify.
-    - I am planning on removing this in the future and migrating to a native fetch implementation.
   - **ApolloProvider**: Sets up the Apollo context for running Graphql queries and mutations. This runs through the `/api/graphql` Next.js route and is handled by the Shopify API library.
-  - **SessionProvider**: This ensures that the user always has an active session and that the app is installed correctly. It basically redirects the user to authenticate when it needs to.
-    - In order to accomplish this, a request is sent to `/api/auth/verify` on every page load (client side). This was done client side to preserve the [Automatic Static Optimization](https://nextjs.org/docs/advanced-features/automatic-static-optimization) features in Next.js (only for pages that aren't the install page)
-    - This route checks for online and offline tokens existing, validating online tokens and scope mismatches.
 
 ### OAuth
 

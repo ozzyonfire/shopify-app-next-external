@@ -1,5 +1,8 @@
 "use server";
 import { verifyAuth } from "@/lib/shopify/verify";
+import shopify from "@/lib/shopify/initialize-context";
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 export async function checkSession(shop: string) {
   try {
@@ -26,4 +29,9 @@ export async function doServerAction(shop: string): Promise<{
       status: "error",
     };
   }
+}
+
+export async function logout() {
+  cookies().delete("shopifySession");
+  revalidatePath("/");
 }

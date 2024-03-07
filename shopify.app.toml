@@ -2,8 +2,8 @@
 
 client_id = "795b89fc6d37f41cadd360bc5d708eb4"
 name = "app-next-external"
-application_url = "https://comparisons-shortly-louisiana-earning.trycloudflare.com"
-embedded = true
+application_url = "https://ampland-sequence-deposits-learned.trycloudflare.com"
+embedded = false
 
 [build]
 automatically_update_urls_on_dev = true
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://comparisons-shortly-louisiana-earning.trycloudflare.com/auth/callback",
-  "https://comparisons-shortly-louisiana-earning.trycloudflare.com/auth/shopify/callback",
-  "https://comparisons-shortly-louisiana-earning.trycloudflare.com/api/auth/callback"
+  "https://ampland-sequence-deposits-learned.trycloudflare.com/auth/callback",
+  "https://ampland-sequence-deposits-learned.trycloudflare.com/auth/shopify/callback",
+  "https://ampland-sequence-deposits-learned.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

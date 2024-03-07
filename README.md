@@ -32,11 +32,6 @@ This will clone the template and install the required dependencies.
 
 - [Authorization Code Grant (OAuth)]https://shopify.dev/docs/apps/auth/get-access-tokens/authorization-code-grant
 
-### Providers
-
-- in \_app.tsx there are a number of Providers which are needed to get everything established for an Embedded App
-  - **ApolloProvider**: Sets up the Apollo context for running Graphql queries and mutations. This runs through the `/api/graphql` Next.js route and is handled by the Shopify API library.
-
 ### OAuth
 
 OAuth is handled using the `/api/auth` and `/api/auth/callback` routes. The app is setup to use both online and offline tokens, by default.
@@ -52,64 +47,6 @@ DATABASE_URL= # database connection string - for connecting to prisma
 ```
 
 The first two variables are automatically populated by the Shopify CLI.
-
-## Todo
-
-- ✅ Session saving using MongoDB
-- ✅ OAuth flow for online and offline tokens
-- ✅ GraphQl call using Apollo
-- ✅ New router config for Next.js and App Bridge
-- ✅ AppUninstalled webhook - cleanup and delete sessions
-- ✅ Database sessions managed through Prisma
-- ⬜ Remove the APIProvider and use fetch instead
-- ⬜ Prune excess leftover unused code
-
-## Tech Stack
-
-This template combines a number of third party open-source tools:
-
-- [Next.js](https://nextjs.org/) builds the [React](https://reactjs.org/) frontend.
-
-The following Shopify tools complement these third-party tools to ease app development:
-
-- [Shopify API library](https://github.com/Shopify/shopify-api-js?tab=readme-ov-file) manages OAuth on the serverless backend. This lets users install the app and grant scope permissions.
-- [App Bridge React](https://shopify.dev/apps/tools/app-bridge/getting-started/using-react) adds authentication to API requests in the frontend and renders components outside of the App’s iFrame.
-- [Axios](https://axios-http.com/) for simple http requests for interacting with the API (Shopify or Custom API routes through Next API Pages).
-  - Removing this in the future.
-- [Apollo](https://www.apollographql.com/) for interacting with the Shopify GraphQL API.
-- [Polaris React](https://polaris.shopify.com/) is a powerful design system and component library that helps developers build high quality, consistent experiences for Shopify merchants.
-- [Custom hooks](https://github.com/Shopify/shopify-frontend-template-react/tree/main/hooks) make authenticated requests to the Admin API.
-- [Prisma](https://www.prisma.io/) for managing database connections and migrations.
-
-## Getting started
-
-#### Local Development
-
-[The Shopify CLI](https://shopify.dev/apps/tools/cli) connects to an app in your Partners dashboard. It provides environment variables, runs commands in parallel, and updates application URLs for easier development.
-
-You can develop locally using your preferred package manager. Run one of the following commands from the root of your app.
-
-Using yarn:
-
-```shell
-yarn dev
-```
-
-Using npm:
-
-```shell
-npm run dev
-```
-
-Using pnpm:
-
-```shell
-pnpm run dev
-```
-
-Open the URL generated in your console. Once you grant permission to the app, you can start development.
-
-## Deployment
 
 ### Application Storage
 
